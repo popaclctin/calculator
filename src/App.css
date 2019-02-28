@@ -1,0 +1,19 @@
+.calculator {
+  font-size: 3rem;
+  margin: 10rem auto;
+  background-color: cornflowerblue;
+}
+
+.calculator button {
+  display: block;
+  width: 100%;
+  font-size: 3rem;
+  padding: 1rem 2rem;
+}
+
+.result {
+  background-color: black;
+  color: white;
+  padding: 1rem 2rem;
+  text-align: end;
+}
