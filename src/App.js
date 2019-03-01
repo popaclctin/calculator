@@ -1,81 +1,164 @@
 import React, { Component } from 'react';
 import './App.css';
 
+const OPERATIONS = {
+  ADD: (op1, op2) => op1 + op2,
+  SUBTRACT: (op1, op2) => op1 - op2,
+  MULTIPLY: (op1, op2) => op1 * op2,
+  DIVIDE: (op1, op2) => op1 / op2,
+};
+
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: 0,
+      displayValue: 0,
+      operator: null,
+      inputValue: true,
+    };
+    this.onClickNumber = this.onClickNumber.bind(this);
+    this.onClear = this.onClear.bind(this);
+    this.onClickOperation = this.onClickOperation.bind(this);
+    this.onEquals = this.onEquals.bind(this);
+  }
+
+  onClickOperation(name) {
+    const newOperator = OPERATIONS[name];
+    this.setState(({ displayValue, operator, value }) => {
+      const result = operator
+        ? operator(value, displayValue)
+        : displayValue;
+      return {
+        operator: newOperator,
+        value: result,
+        inputValue: true,
+        displayValue: result,
+      };
+    });
+  }
+
+  onEquals() {
+    this.setState(({ operator, value, displayValue }) => {
+      const result = operator
+        ? operator(value, displayValue)
+        : displayValue;
+      return {
+        displayValue: result,
+        operator: null,
+        inputValue: true,
+      };
+    });
+  }
+
+  onClear() {
+    this.setState({ displayValue: 0, operator: null });
+  }
+
+  onClickNumber(input) {
+    this.setState(({ displayValue, inputValue }) => {
+      return {
+        displayValue: inputValue
+          ? parseInt(input)
+          : parseInt('' + displayValue + input),
+        inputValue: false,
+      };
+    });
+  }
+
   render() {
+    const { displayValue } = this.state;
     return (
       <table className="calculator">
-        <tr>
-          <td colspan="4">
-            <div className="result">0</div>
-          </td>
-        </tr>
-        <tr>
-          <td colspan="3">
-            <Button label="clear" />
-          </td>
-          <td>
-            <Button label="÷" />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <Button label="7" />
-          </td>
-          <td>
-            <Button label="8" />
-          </td>
-          <td>
-            <Button label="9" />
-          </td>
-          <td>
-            <Button label="×" />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <Button label="4" />
-          </td>
-          <td>
-            <Button label="5" />
-          </td>
-          <td>
-            <Button label="6" />
-          </td>
-          <td>
-            <Button label="-" />
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <Button label="1" />
-          </td>
-          <td>
-            <Button label="2" />
-          </td>
-          <td>
-            <Button label="3" />
-          </td>
-          <td>
-            <Button label="+" />
-          </td>
-        </tr>
-        <tr>
-          <td />
-          <td>
-            <Button label="0" />
-          </td>
-          <td colspan="2">
-            <Button label="=" />
-          </td>
-        </tr>
+        <tbody>
+          <tr>
+            <td colSpan="4">
+              <div className="result">{displayValue}</div>
+            </td>
+          </tr>
+          <tr>
+            <td colSpan="3">
+              <OperationButton label="clear" onClick={this.onClear} />
+            </td>
+            <td>
+              <OperationButton
+                label="÷"
+                onClick={() => this.onClickOperation('DIVIDE')}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <NumberButton label="7" onClick={this.onClickNumber} />
+            </td>
+            <td>
+              <NumberButton label="8" onClick={this.onClickNumber} />
+            </td>
+            <td>
+              <NumberButton label="9" onClick={this.onClickNumber} />
+            </td>
+            <td>
+              <OperationButton
+                label="×"
+                onClick={() => this.onClickOperation('MULTIPLY')}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <NumberButton label="4" onClick={this.onClickNumber} />
+            </td>
+            <td>
+              <NumberButton label="5" onClick={this.onClickNumber} />
+            </td>
+            <td>
+              <NumberButton label="6" onClick={this.onClickNumber} />
+            </td>
+            <td>
+              <OperationButton
+                label="-"
+                onClick={() => this.onClickOperation('SUBTRACT')}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <NumberButton label="1" onClick={this.onClickNumber} />
+            </td>
+            <td>
+              <NumberButton label="2" onClick={this.onClickNumber} />
+            </td>
+            <td>
+              <NumberButton label="3" onClick={this.onClickNumber} />
+            </td>
+            <td>
+              <OperationButton
+                label="+"
+                onClick={() => this.onClickOperation('ADD')}
+              />
+            </td>
+          </tr>
+          <tr>
+            <td />
+            <td>
+              <NumberButton label="0" onClick={this.onClickNumber} />
+            </td>
+            <td colSpan="2">
+              <OperationButton label="=" onClick={this.onEquals} />
+            </td>
+          </tr>
+        </tbody>
       </table>
     );
   }
 }
 
-const Button = ({ label, onClick }) => (
+const OperationButton = ({ label, onClick }) => (
   <button onClick={onClick}>{label}</button>
+);
+
+const NumberButton = ({ label, onClick }) => (
+  <button onClick={() => onClick(label)}>{label}</button>
 );
 
 export default App;

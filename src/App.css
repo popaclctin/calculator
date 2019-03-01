@@ -1,7 +1,7 @@
 .calculator {
   font-size: 3rem;
   margin: 10rem auto;
-  background-color: cornflowerblue;
+  background-color: #a2790d;
 }
 
 .calculator button {
@@ -9,11 +9,24 @@
   width: 100%;
   font-size: 3rem;
   padding: 1rem 2rem;
+  color: black;
+  background-color: #ebd197;
+  border: 0;
+}
+
+.calculator button:hover {
+  background-color: #b48811;
+  cursor: pointer;
+}
+
+.calculator button:active {
+  background-color: white;
 }
 
 .result {
-  background-color: black;
-  color: white;
+  background-color: #ffffff;
+  color: black;
   padding: 1rem 2rem;
   text-align: end;
+  height: 4rem;
 }
