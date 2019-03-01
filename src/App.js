@@ -31,10 +31,12 @@ class App extends Component {
         ? operator(value, displayValue)
         : displayValue;
       return {
-        operator: newOperator,
+        operator: isFinite(result) ? newOperator : null,
         value: result,
         inputValue: true,
-        displayValue: result,
+        displayValue: isFinite(result)
+          ? result
+          : 'Cannot divide by zero',
       };
     });
   }
@@ -45,7 +47,9 @@ class App extends Component {
         ? operator(value, displayValue)
         : displayValue;
       return {
-        displayValue: result,
+        displayValue: isFinite(result)
+          ? result
+          : 'Cannot divide by zero',
         operator: null,
         inputValue: true,
       };
@@ -89,6 +93,8 @@ class App extends Component {
       case 'c':
         this.onClear();
         break;
+      default:
+        return;
     }
   }
 
@@ -109,8 +115,8 @@ class App extends Component {
       <table className="calculator">
         <tbody>
           <tr>
-            <td colSpan="4">
-              <div className="result">{displayValue}</div>
+            <td colSpan="4" className="result">
+              <div>{displayValue}</div>
             </td>
           </tr>
           <tr>

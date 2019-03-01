@@ -26,7 +26,15 @@
 .result {
   background-color: #ffffff;
   color: black;
+  height: 4rem;
+  width: 10rem;
+}
+
+.result div {
+  text-align: end;
   padding: 1rem 2rem;
   text-align: end;
-  height: 4rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
