@@ -21,6 +21,7 @@ class App extends Component {
     this.onClear = this.onClear.bind(this);
     this.onClickOperation = this.onClickOperation.bind(this);
     this.onEquals = this.onEquals.bind(this);
+    this.handleKeyDown = this.handleKeyDown.bind(this);
   }
 
   onClickOperation(name) {
@@ -66,6 +67,42 @@ class App extends Component {
     });
   }
 
+  handleKeyDown(event) {
+    const value = event.key;
+    !isNaN(value) && this.onClickNumber(value);
+    switch (value) {
+      case '+':
+        this.onClickOperation('ADD');
+        break;
+      case '-':
+        this.onClickOperation('SUBTRACT');
+        break;
+      case '*':
+        this.onClickOperation('MULTIPLY');
+        break;
+      case '/':
+        this.onClickOperation('DIVIDE');
+        break;
+      case 'Enter':
+        this.onEquals();
+        break;
+      case 'c':
+        this.onClear();
+        break;
+    }
+  }
+
+  componentDidMount() {
+    document.addEventListener('keydown', this.handleKeyDown, false);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener(
+      'keydown',
+      this.handleKeyDown,
+      false,
+    );
+  }
   render() {
     const { displayValue } = this.state;
     return (
